@@ -1,12 +1,27 @@
 <?php
 
+//Inclui o arquivo que faz a conexão com o banco de dados
 include "../infra/conexao.php";
 
+//Pego o ID que foi enviado pelo GET
 $id = $_GET["id"];
-$sql = "SELECT * FROM livros WHERE id = $id";
-$resultado = mysqli_query($conexao, $sql );
 
-$livro =mysqli_fetch_assoc($resultado);
+//Valido o ID para verificar se ele não é inválido
+if ($id === false || $id === null || $id <= 0) {
+    die("ID inválido.");
+}
+
+//Aqui eu faço a consulta SQL para buscar o livro que possui esse ID
+//Com Prepared Statements, eu poderia usar ? no lugar do $id
+//Isso deixaria a consulta mais segura contra SQL Injection
+$sql = "SELECT * FROM livros WHERE id = $id";
+
+//Aqui eu executo a consulta no banco de dados
+//Com Prepared Statements, no lugar de mysqli_query(), eu usaria prepare(), bind_param() e execute()
+$resultado = mysqli_query($conexao, $sql);
+
+//Aqui eu pego os dados do livro encontrado e guardo em uma variável
+$livro = mysqli_fetch_assoc($resultado);
 
 ?>
 
